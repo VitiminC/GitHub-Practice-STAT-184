@@ -1,4 +1,4 @@
-## Welcome to GitHub Pages
+## Stat 184
 
 You can use the [editor on GitHub](https://github.com/VitiminC/GitHub-Practice-STAT-184/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
 
