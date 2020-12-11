@@ -1,5 +1,6 @@
 ---
-title: "Final Project Preliminary EDA"
+title: "Final Project"
+Author: "Charlie Lu"
 output: html_notebook
 ---
 
@@ -7,6 +8,7 @@ output: html_notebook
 ## Set Up
 ```{r}
 rm(list = ls()) ## cleans up your R environment
+
 # load packages
 library(tidyverse)
 library(DataComputing)
@@ -22,8 +24,11 @@ Poverty <- read.csv("~/Stat 184/Final Project/Poverty.csv")
 GDP <- read.csv("~/Stat 184/Final Project/state gdp per capita.csv")
 ```
 
-### Research Question
-Does per capita GDP reflect the poverty rate accurately?
+### Research/Guiding Question
+
+Does per capita GDP reflect the poverty rate in the United States accurately?
+
+  This question is important because it is a method of determining whether or not wealth distribution in the country is consistant across all states or whether it is an isolated state by state case. Which leads to one of the biggest challenges, the scope of the data, the data provided contains regional County data, if the scope is to be the entire state then some wrangling is needed to give us a state by state dataset of poverty.
 
 ### Data Analysis
 
@@ -31,11 +36,11 @@ Does per capita GDP reflect the poverty rate accurately?
 glimpse(Poverty)
 glimpse(GDP)
 ```
-
+    
     Each case in the Poverty dataset represents a county during a specific year, their total population, and the number of    people in poverty.
-
+  
     Each case in the GDP dataset represents a state and their gdp in a specific year.
-
+  
     The variables that this research question will utilize is the State, 2015, GDP, and povertyest variables.
   the State variable is so that we can observe trends stateside not just nation wide, the GDP is essential to the research    question as it displays the per capita gdp by state so that it can be compared to the povertyest which shows the total
   number of people in poverty in a specific state. Lastly the year variable is so that we have consistancy in our data,
@@ -53,6 +58,7 @@ head(GDP)
 yearlyPoverty <-
   Poverty %>%
   spread( key=year, value = (povertyest) )
+
 povertySpread <-
   yearlyPoverty %>%
   rename(poverty2015 = "2015", population2015 = population_inferred) %>%
@@ -75,6 +81,8 @@ ggplot(data=povertySpread,aes(x=population2015,y=poverty2015))+
 
 
 ### The last one was a little messy, let's step further back and take a broader look at stateside poverty
+
+This is where we wrangle the data into a usable form for state side data from the county data by using summarise and sum with an equation.
 ```{r}
 poverty2015 <-
   Poverty %>%
@@ -131,7 +139,7 @@ combine %>%
 ```
 
   The outlier is the nations Capital!!! Washington D.C, where there is a poverty rate of 17.7% at the same time as having the highest GDP in the nation by nearly 100,000 gap. Of course there are many reasons for this outlier, government positions are located in DC and their salary overcompensates for those in poverty which skews the calculation which only account for average, this being said, our research question asks if GDP accurately represents poverty, in this case it does not. However it is an extreme outlier so why don't we take care of it.
-
+  
 ```{r}
 combineClean <-
   combine %>%
@@ -146,4 +154,7 @@ ggplot(data=combineClean,aes(x=percent,y=gdp))+
   ylab("GDP per capita(person)")+
   xlab("Poverty %")
 ```
-There we go, much better. Without the outlier our graph indicates that there is a accurate relationship between gdp and poverty rates, the higher the gdp, the lower the poverty it seems.
+
+### Conclusion
+
+Without the outlier our graph the data indicates that there is a accurate relationship between gdp and poverty rates, the higher the gdp, the lower the poverty, the capital being an exception.
